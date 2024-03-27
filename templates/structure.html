@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+    <head>
+        [Page meta, page css, page js files, page title etc...]
+    </head>
+    <body class=" <!-- dark or light mode compare -->">
+        <!-- loader Start -->
+            <div id="loading">
+                [LOADER CONTENT]
+            </div>
+        <!-- loader END -->
+        <!-- Sidebar Start -->
+            [SIDEBAR CONTENT]
+        <!-- Sidebar END -->
+        <main class="main-content">
+            <div class="position-relative iq-banner">
+            <!--Nav Start-->
+                [HEADER CONTENT]
+                [SUB-HEADER CONTENT]
+            <!--Nav End-->
+            </div>
+            <div class="content-inner container-fluid pb-0" id="page_layout">
+                [MAIN CONTENT]
+            </div>
+            <!-- Footer Start -->
+                [FOOTER CONTENT]
+            <!-- Footer END -->
+        </main>
+        [SETTING PANEL]
+        <!-- Wrapper End-->
+        <!-- offcanvas start -->
+            [offcanvas / popup CONTENT]
+        <!-- offcanvas END -->
+
+        <!-- Script Start -->
+            [SCRIPT CONTENT]
+        <!-- Script END -->
+    </body>
+</html>
+
+
+
+<!--CSS-->
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="../assets/images/favicon.ico" />
+
+<!-- Library / Plugin Css Build -->
+<link rel="stylesheet" href="../assets/css/core/libs.min.css" />
+
+<!-- flatpickr css -->
+<link rel="stylesheet" href="../assets/vendor/flatpickr/dist/flatpickr.min.css" />
+
+<link rel="stylesheet" href="../assets/vendor/sheperd/dist/css/sheperd.css">
+
+<!-- Choisejs css -->
+<link rel="stylesheet" href="../assets/vendor/choiceJS/style/choices.min.css">
+
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+
+<!-- Sweetlaert2 css -->
+<link rel="stylesheet" href="../assets/vendor/sweetalert2/dist/sweetalert2.min.css"/>
+
+<!-- btn hover css -->
+<link rel="stylesheet" href="../assets/vendor/button-hover/css/hover-min.css"/>
+
+<!-- Quill Editor css -->
+<link rel="stylesheet" href="../assets/vendor/quill/quill.snow.css">
+
+<!-- NoUI Slider css -->
+<link rel="stylesheet" href="../assets/vendor/noUiSilder/style/nouislider.min.css">
+
+<!-- Fullcalender CSS -->
+<link rel='stylesheet' href='../assets/vendor/fullcalendar/core/main.css' />
+<link rel='stylesheet' href='../assets/vendor/fullcalendar/daygrid/main.css' />
+<link rel='stylesheet' href='../assets/vendor/fullcalendar/timegrid/main.css' />
+<link rel='stylesheet' href='../assets/vendor/fullcalendar/list/main.css' />
+
+<!-- Uppy Css -->
+<link rel="stylesheet" href="../assets/vendor/uppy/uppy.min.css"/>
+
+<!-- Hope Ui Design System Css -->
+<link rel="stylesheet" href="../assets/css/hope-ui.min.css" />
+<link rel="stylesheet" href="../assets/css/pro.min.css" />
+
+<!-- Custom Css -->
+<link rel="stylesheet" href="../assets/css/custom.min.css" />
+
+<!-- Dark Css -->
+<link rel="stylesheet" href="../assets/css/dark.min.css"/>
+
+<!-- Customizer Css -->
+<link rel="stylesheet" href="../assets/css/customizer.min.css" />
+
+<!-- RTL Css -->
+<link rel="stylesheet" href="../assets/css/rtl.min.css"/>
+
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+
+<!--JS-->
+
+
+
+
+<!-- Library Bundle Script -->
+<script src="{% static 'assets/js/core/libs.min.js' %}"></script>
+<!-- Lodash Utility -->
+<script src="{% static 'assets/vendor/lodash/lodash.min.js' %}"></script>
+<!-- Utilities Functions -->
+<script src="{% static 'assets/js/iqonic-script/utility.js' %}"></script>
+<!-- Settings Script -->
+<script src="{% static 'assets/js/iqonic-script/setting.js' %}"></script>
+<!-- Settings Init Script -->
+<script src="{% static 'assets/js/setting-init.js' %}"></script>
+<!-- External Library Bundle Script -->
+<script src="{% static 'assets/js/core/external.min.js' %}"></script>
+<!-- Widgetchart Script -->
+<script src="{% static 'assets/js/charts/widgetcharts.js' %}" defer></script>
+<!-- Dashboard Script -->
+<script src="{% static 'assets/js/charts/dashboard.js' %}" defer></script>
+<!-- App Script -->
+<script src="{% static 'assets/js/hope-ui.js' %}" defer></script>
+<script src="{% static 'assets/js/hope-uipro.js' %}" defer></script>
+
+<!-- Plugins Script -->
+
+<!-- Tour plugin Start -->
+<script src="{% static 'assets/vendor/sheperd/dist/js/sheperd.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/tour.js' %}" defer></script>
+
+<!-- Masonry plugin Start -->
+<script src="{% static 'assets/vendor/masonry/masonry.pkgd.min.js' %}"></script>
+
+<!-- Flatpickr Script -->
+<script src="{% static 'assets/vendor/flatpickr/dist/flatpickr.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/flatpickr.js' %}" defer></script>
+
+<script src="{% static 'assets/vendor/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'assets/js/charts/vectore-chart.js' %}" defer></script>
+
+<!-- Slider-tab Script -->
+<script src="{% static 'assets/js/plugins/slider-tabs.js' %}"></script>
+
+<!-- fslightbox Script -->
+<script src="{% static 'assets/js/plugins/fslightbox.js' %}" defer></script>
+
+<!-- Sweet-alert Script -->
+<script src="{% static 'assets/vendor/sweetalert2/dist/sweetalert2.min.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/sweet-alert.js' %}" defer></script>
+
+<!-- Choisejs Script -->
+<script src="{% static 'assets/vendor/choiceJS/script/choices.min.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/choice.js' %}" defer></script>
+
+<!-- Select2 Script -->
+<script src="{% static 'assets/js/plugins/select2.js' %}" defer></script>
+
+<!-- Form Wizard Script -->
+<script src="{% static 'assets/js/plugins/form-wizard.js' %}" defer></script>
+
+<!-- Quill Editor Script -->
+<script src="{% static 'assets/vendor/quill/quill.min.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/quill.js' %}" defer></script>
+
+<!-- Circle-Progress Script -->
+<script src="{% static 'assets/js/plugins/circle-progress.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/custom-circle-progress.js' %}" defer></script>
+
+<!-- NoUI Slider Script -->
+<script src="{% static 'assets/vendor/noUiSilder/script/nouislider.min.js' %}" async></script>
+
+<!-- SignaturePad Script -->
+<script src="{% static 'assets/vendor/signature_pad/dist/signature_pad.umd.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/signaturepad.js' %}" defer></script>
+
+<!-- Uppy Script -->
+<script src="{% static 'assets/vendor/uppy/uppy.min.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/uppy.js' %}" defer></script>

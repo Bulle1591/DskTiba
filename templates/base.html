@@ -1,0 +1,44 @@
+<!doctype html>
+{% load static %}
+<html lang="en" dir="ltr">
+    <head>
+        {% include 'partials/meta.html' %}
+        {% include 'partials/css.html' %}
+    </head>
+    <body class=" ">
+        <!-- loader Start -->
+            <div id="loading">
+                {% include 'partials/loader.html' %}
+            </div>
+        <!-- loader END -->
+        <!-- Sidebar Start -->
+            {% include 'partials/sidebar.html' %}
+        <!-- Sidebar END -->
+        <main class="main-content">
+            <div class="position-relative">
+            <!--Nav Start-->
+                {% include 'partials/header.html' %}
+            <!--Nav End-->
+            </div>
+            <div class="content-inner container-fluid pb-0" id="page_layout">
+                {% block content %}{% endblock %}
+            </div>
+            <!-- Footer Start -->
+                {% include 'partials/footer.html' %}
+            <!-- Footer END -->
+        </main>
+        <a class="btn btn-secondary btn-dashboard" href="#">
+            Landing Pages
+        </a>
+        <!--{% include 'partials/settings.html' %}-->
+        <!-- Wrapper End-->
+        <!-- offcanvas start -->
+            {% include 'partials/offcanvas.html' %}
+        <!-- offcanvas END -->
+
+        <!-- Script Start -->
+            {% include 'partials/scripts.html' %}
+            {% block extrajs %}{% endblock extrajs %}
+        <!-- Script END -->
+    </body>
+</html>

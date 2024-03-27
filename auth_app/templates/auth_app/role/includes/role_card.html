@@ -1,0 +1,49 @@
+{% for role in roles %}
+<!--begin::Col-->
+<div class="col-md-4">
+    <!--begin::Card-->
+    <div class="card card-flush h-md-100" style="height: 300px;">
+        <!--begin::Card header-->
+        <div class="card-header">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <h4>{{ role.name }}</h4>
+            </div>
+            <!--end::Card title-->
+        </div>
+        <!--end::Card header-->
+
+        <!--begin::Card body-->
+        <div class="card-body pt-1">
+            <!--begin::Users-->
+            <div class="fw-bold text-gray-600 mb-3">Total users with this role: {{ role.total_users }}</div>
+            <!--end::Users-->
+
+            <!--begin::Permissions-->
+             <div class="d-flex flex-column text-gray-600">
+                {% for permission in role.permissions.all|slice:":4" %}
+                    <div class="d-flex align-items-center py-1">
+                        <span class="bullet bg-primary me-3"></span> {{ permission.name }}
+                    </div>
+                {% endfor %}
+                {% if role.permissions.count > 4 %}
+                    <div class="d-flex align-items-center py-2">
+                        <span class="bullet bg-primary me-3"></span>
+                        <em>and {{ role.permissions.count|add:"-4" }} more...</em>
+                    </div>
+                {% endif %}
+            </div>
+            <!--end::Permissions-->
+        </div>
+        <!--end::Card body-->
+        <!--begin::Card footer-->
+        <div class="text-center mb-1">
+            <a href="view.html" class="btn btn-sm btn-light custom-form-action-button btn-active-primary my-1 me-2">View Role</a>
+            <button type="button" class="btn btn-sm btn-light custom-form-action-button btn-active-light-primary my-1" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role">Edit Role</button>
+        </div>
+        <!--end::Card footer-->
+    </div>
+    <!--end::Card-->
+</div>
+<!--end::Col-->
+{% endfor %}

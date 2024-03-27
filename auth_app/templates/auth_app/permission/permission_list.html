@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Permissions {% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
+    <div class="d-flex flex-column">
+        <h3>User Permissions</h3>
+        <p class="text-primary mb-0">Administrator Dashboard</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
+        <div class="form-check form-switch mb-0 iq-status-switch">
+            <input class="form-check-input iq-status" type="checkbox" id="iq-switch" checked="">
+            <label class="form-check-label iq-reset-status" for="iq-switch">
+                Online
+            </label>
+        </div>
+        <div class="form-group mb-0">
+            <select class="select2-basic-single form-control" name="state" style="width: 100%;">
+                <option >Past 30 Days</option>
+                <option >Past 60 Days</option>
+                <option >Past 90 Days</option>
+                <option >Past 1 year</option>
+                <option >Past 2 year</option>
+            </select>
+        </div>
+        <div class="form-group mb-0">
+            <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active" placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
+        </div>
+        <button type="button" class="btn btn-primary">Analytics</button>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+      <div class="card card-flush">
+        <div class="card-header">
+            <div class="card-toolbar">
+                <button type="button" id="add-permission" class="btn btn-sm custom-form-action-button btn-primary me-2" data-bs-toggle="modal" data-bs-target="#userPermissionModal">Add Permission</button>
+                <a href="{% url 'auth_app:usergroup' %}" type="button" id="add-user-group" class="btn btn-sm btn-soft-info custom-form-action-button me-2">Group Page</a>
+                <a href="{% url 'auth_app:role'%}" type="button" id="add-user-role" class="btn btn-sm btn-soft-info custom-form-action-button me-2">Role Page</a>
+                <button type="button" id="delete-permission" class="btn btn-sm btn-danger me-2">Delete Selected</button>
+            </div>
+        </div>
+        <div class="card-body card-scroll h-150px">
+          {% include 'auth_app/permission/includes/table.html' %}
+        </div>
+    </div>
+</div>
+
+{% include 'auth_app/permission/includes/form.html' %}
+
+{% endblock content %}
+
+
+
+{% block extrajs %}
+<script src="{% static 'assets/js/apps/auth_app/permission/submit_form.js' %}"></script>
+<script src="{% static 'assets/js/apps/auth_app/permission/table.js' %}"></script>
+<script src="{% static 'assets/js/apps/auth_app/permission/load_form_data.js' %}"></script>
+{% endblock extrajs %}

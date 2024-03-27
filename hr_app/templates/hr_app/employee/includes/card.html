@@ -1,0 +1,42 @@
+{% if user_profiles %}
+  {% for user in user_profiles %}
+
+<div class="col-xl-2 col-lg-6 col-md-6">
+    <div class="card">
+        <div class="card-body text-center">
+            <div class="dropdown btn-pinned">
+              <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#viewProfileModal{{user.id}}">Profile</a></li>
+                <li><a class="dropdown-item" href="/user/account/{{user.id}}">Account</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger" href="javascript:void(0);">Delete</a></li>
+              </ul>
+            </div>
+            <div class="mx-auto mb-3">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#viewProfileModal{{ user.id }}">
+                <img src="/media/{{ user.photo }}" alt="Avatar Image" class="rounded-circle w-px-100" />
+              </a>
+            </div>
+            <h5 class="mb-1 card-title">{{ user.first_name|default_if_none:"" }} {{ user.last_name|default_if_none:"" }}</h5>
+            <div class="d-flex align-items-center justify-content-center my-3 gap-2 mb-4" style="font-size: 11px;">
+              <a href="javascript:;" class="me-1"><span class="badge bg-label-secondary">{{user.profession}}</span></a>
+             <a href="javascript:;">
+                <span class="badge {% if user.is_active == 1 %}bg-label-warning{% else %}bg-label-secondary{% endif %}">
+                    {% if user.is_active == 1 %}
+                        ACTIVE
+                    {% else %}
+                        INACTIVE
+                    {% endif %}
+                </span>
+             </a>
+
+            </div>
+      </div>
+  </div>
+</div>
+
+  {% endfor %}
+{% endif %}

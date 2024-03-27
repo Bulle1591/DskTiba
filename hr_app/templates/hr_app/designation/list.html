@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Job Designation {% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
+    <div class="d-flex flex-column">
+        <h3>Job Designation</h3>
+        <p class="text-primary mb-0">Administrator Dashboard</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
+        <div class="form-check form-switch mb-0 iq-status-switch">
+            <input class="form-check-input iq-status" type="checkbox" id="iq-switch" checked="">
+            <label class="form-check-label iq-reset-status" for="iq-switch">
+                Online
+            </label>
+        </div>
+        <div class="form-group mb-0">
+            <select class="select2-basic-single form-control" name="state" style="width: 100%;">
+                <option >Past 30 Days</option>
+                <option >Past 60 Days</option>
+                <option >Past 90 Days</option>
+                <option >Past 1 year</option>
+                <option >Past 2 year</option>
+            </select>
+        </div>
+        <div class="form-group mb-0">
+            <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active" placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
+        </div>
+        <button type="button" class="btn btn-primary">Analytics</button>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+     <div class="mb-5">
+            <div class="card-toolbar">
+                <button type="button" id="add-designation" class="btn btn-sm custom-form-action-button btn-primary me-2" data-bs-toggle="modal" data-bs-target="#designationModal">Add New</button>
+                <a href="{% url 'hr_app:job_type' %}" id="job-type-page" class="btn btn-sm btn-info me-2">Employment Type Page</a>
+                <button type="button" id="delete-designation" class="btn btn-sm btn-danger me-2">Delete Selected</button>
+            </div>
+     </div>
+      <div class="card card-flush">
+        <div class="card-body card-scroll h-150px">
+          {% include 'hr_app/designation/includes/table.html' %}
+        </div>
+    </div>
+</div>
+
+{% include 'hr_app/designation/includes/form.html' %}
+{% endblock content %}
+
+
+
+{% block extrajs %}
+<script src="{% static 'assets/js/apps/hr_app/designation/table.js' %}"></script>
+<script src="{% static 'assets/js/apps/hr_app/designation/form.js' %}"></script>
+<script src="{% static 'assets/js/apps/hr_app/designation/update.js' %}"></script>
+
+{% endblock extrajs %}

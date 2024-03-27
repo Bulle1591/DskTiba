@@ -1,0 +1,88 @@
+{% load static %}
+{% load widget_tweaks %}
+<div class="modal fade" id="RoleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-simple modal-simple modal-dialog-centered modal-add-new-role" style="max-width: 1250px;">
+    <div class="modal-content p-3 p-md-5">
+      <div class="modal-body">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center mb-4">
+          <h3 class="role-title">Add New Role</h3>
+          <p>Set role permissions</p>
+        </div>
+        <!-- Add role form -->
+        <div class="row">
+   <div class="col-md-12">
+      <div class="box box-primary">
+         <div class="box-header">
+            <h4 class="box-title">Create Role</h4>
+         </div>
+         <div class="box-body ">
+            <form class="form" method="post" action="">
+    {% csrf_token %}
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {% render_field form.name class="form-control" placeholder="Enter a role name" tabindex="-1" %}
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            {% render_field form.description class="form-control" rows="1" placeholder="Enter role description" tabindex="-1" %}
+        </div>
+        <div class="form-group col-md-12">
+            <label for="permissions">Permissions</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="check_all">
+                <label class="form-check-label" for="check_all">Check All</label>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Module Name</th>
+                                <th>View</th>
+                                <th>Create</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                                <th>Select All</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for content_type, friendly_name in content_types.items %}
+                                <tr class="module_checkbox">
+                                    <td>{{ friendly_name }}</td>
+                                    {% for permission in content_type.auth_app_permissions.all %}
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="permissions" id="{{ content_type.name }}{{ permission.name }}" value="{{ permission.id }}">
+
+                                            </div>
+                                        </td>
+                                    {% endfor %}
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="select_all_{{ content_type.name }}">
+                                            <label class="form-check-label" for="select_all_{{ content_type.name }}">Select All</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+         </div>
+      </div>
+   </div>
+</div>
+        <!--/ Add role form -->
+      </div>
+    </div>
+  </div>
+</div>
