@@ -1,14 +1,84 @@
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password  # Import for password validation (optional)
 from django.db.models import Prefetch
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils import timezone
+from django.views.generic.edit import FormView
 from django.views import View
 
 from .constants import get_model_name  # make sure to import the function
 from .forms import UserGroupCreateForm, PermissionForm, RoleForm
-from .models import AppGroup, Permission, Role, AppUser
+from .models import AppGroup, Permission, Role, AppUser, FailedLoginAttempt
 from hr_app.models import Employee, EmployeePhoto
+
+
+# -----------------------------------------------------------------------------------------------
+# AUTHENTICATION
+# ------------------------------------------------------------------------------------------------
+class LoginView(FormView):
+    form_class = AuthenticationForm
+    template_name = 'auth_app/login/signin.html'
+    success_url = '/dashboard/'
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+
+        ip_address = self.request.META.get('REMOTE_ADDR')
+
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            login(self.request, user)
+            if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'success': True})
+            else:
+                return redirect(self.success_url)
+        else:
+            print("Authentication failed")  # Debugging statement
+            FailedLoginAttempt.objects.create(username=email, timestamp=timezone.now(),
+                                              attempt_type="Invalid Credentials", ip_address=ip_address)
+            return JsonResponse({'success': False, 'error': 'Invalid credentials.'})
+
+    def form_invalid(self, form):
+        email = form.data.get('username')
+        password = form.data.get('password')
+
+        ip_address = self.request.META.get('REMOTE_ADDR')
+
+        # Email Validation
+        try:
+            validate_email(email)
+        except ValidationError:
+            print("Email validation failed")  # Debugging statement
+            FailedLoginAttempt.objects.create(username=email, timestamp=timezone.now(), attempt_type="Invalid E-mail address",
+                                              ip_address=ip_address)
+            return JsonResponse({'success': False, 'error': 'Enter a valid email address.'})
+
+        # Password Complexity Validation
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            print(f"Password validation error: {e}")  # Debugging statement
+            FailedLoginAttempt.objects.create(username=email, timestamp=timezone.now(),
+                                              attempt_type="Weak Password",
+                                              ip_address=ip_address)
+            return JsonResponse({'success': False, 'error': 'Password requirements not met.'})
+
+        # This method is called when the form is invalid.
+        # If the form is invalid for reasons other than email or password validation,
+        # return a general error message.
+        return JsonResponse({'success': False, 'error': 'Invalid credentials'})
+
+
+class LogoutView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect('/login/')  # Redirect to a login page
 
 
 # -----------------------------------------------------------------------------------------------
@@ -335,4 +405,3 @@ class RoleDetailView(View):
             'content_types': module_names,
         }
         return render(request, self.template_name, context)
-

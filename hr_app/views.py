@@ -488,7 +488,7 @@ class GenerateEmpNumberView(View):
 # CREATE EMPLOYEE
 class EmployeeCreateView(View):
     template_name = 'hr_app/employee/list.html'
-    
+
     def get(self, request):
         user_form = AppUserForm()
         employee_form = EmployeeForm()
@@ -516,7 +516,8 @@ class EmployeeCreateView(View):
         document_formset = DocumentFormSet(request.POST, request.FILES, prefix='documents')
         photo_form = EmployeePhotoForm(request.POST, request.FILES)
 
-        if all([user_form.is_valid(), employee_form.is_valid(), contact_form.is_valid(), document_formset.is_valid(), photo_form.is_valid()]):
+        if all([user_form.is_valid(), employee_form.is_valid(), contact_form.is_valid(), document_formset.is_valid(),
+                photo_form.is_valid()]):
             email = user_form.cleaned_data.get('email')
             phone_number = contact_form.cleaned_data.get('phone_number')
 
@@ -525,7 +526,11 @@ class EmployeeCreateView(View):
             if EmployeeContact.objects.filter(phone_number=phone_number).exists():
                 return JsonResponse({"message": "A contact with this phone number already exists.", "success": False})
 
-            user_instance = user_form.save()
+            password = user_form.cleaned_data.get('password')
+            user_instance = user_form.save(commit=False)
+            user_instance.set_password(password)
+            user_instance.save()
+
             employee_instance = employee_form.save(commit=False)
             employee_instance.user = user_instance
             employee_instance.save()
@@ -546,8 +551,6 @@ class EmployeeCreateView(View):
                 for field, errors in form.errors.items():
                     error_messages.append(f"{field.capitalize()}: {', '.join(errors)}")
             return JsonResponse({"message": "\n".join(error_messages), "success": False})
-
-
 
 
 # FETCH EMPLOYEE DATA TO BE DISPLAYED IN THE EMPLOYEE CARD

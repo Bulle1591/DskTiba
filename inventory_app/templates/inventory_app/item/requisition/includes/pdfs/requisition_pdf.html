@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Requisition Note</title>
+  <style>
+    /* Body and Font Styles */
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 10pt;
+      margin: 20px;
+    }
+
+    h1, h2 {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 16pt;
+    }
+
+    h2 {
+      font-size: 14pt;
+      text-align: right;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 4px;
+    }
+
+    th {
+      text-align: left;
+      background-color: #f2f2f2;
+    }
+
+    /* Row Styling (optional) */
+    tr:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+    .number-column {
+      width: 70px;
+    }
+    .quantity-column {
+      width: 140px;
+    }
+
+  </style>
+  <link rel="stylesheet" href="{% static 'assets/css/core/libs.min.css' %}" />
+</head>
+<body>
+  <header>
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <h1>{{ requisition.location.name }}</h1>
+      </div>
+      <div class="col-md-6 text-right">
+        <h2>REQUISITION NOTE</h2>
+      </div>
+    </div>
+  </header>
+  <hr class="my-4">
+  <div class="row">
+    <div class="col-md-6">
+      <p><b>Document Number:</b> {{ requisition.requisition_id }}</p>
+      <p><b>Document Date:</b> {{ requisition.requested_at }}</p>
+    </div>
+    <div class="col-md-6 text-end">
+      <p><b>Store Requesting:</b> {{ requisition.location.name }}</p>
+      <p><b>Store Issuing:</b> {{ requisition.sub_department.name }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <p><b>Officer Name:</b> {{ requisition.requested_by.full_name }}</p>
+    </div>
+  </div>
+    <table class="table table-bordered table-striped mt-3">
+      <thead>
+        <tr>
+          <th scope="col" class="number-column">#</th>
+          <th scope="col">ITEM NAME</th>
+          <th scope="col" class="quantity-column">QUANTITY REQUIRED</th>
+          <th scope="col">REMARK</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr class="text-center">
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ item.item.name }} {{ item.item.strength }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.remark }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+</body>
+</html>

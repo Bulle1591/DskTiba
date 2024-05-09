@@ -7,9 +7,26 @@ function loadEmployees() {
             var employeeContainer = $('#employeeContainer'); // replace with your container ID
             employeeContainer.empty(); // clear the container
 
-            // loop through the data and create the cards
-            $.each(data.data, function(index, employee) {
-                var card = `
+            // Check if any employees were returned
+            if (data.data.length === 0) {
+                // No employees were returned, show a SweetAlert2 message
+                Swal.fire({
+                    title: 'No Employees Found',
+                    text: 'Would you like to create a new employee?',
+                    icon: 'question',
+                    confirmButtonText: 'Create Employee',
+                    showCancelButton: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // User clicked 'Create Employee', open the modal
+                        $('#addEmployeeModal').modal('show');
+                    }
+                });
+            } else {
+                // Employees were returned, create the cards
+                $.each(data.data, function(index, employee) {
+                    // ... existing code to create employee cards ...
+                    var card = `
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="card card-flush role-permission-card h-md-100" style="border: none;">
                         <div class="fw-bold text-gray-600 mx-auto p-1">ID #: ${employee.emp_number}</div>
@@ -41,7 +58,8 @@ function loadEmployees() {
                     </div>
                 `;
                 employeeContainer.append(card);
-            });
+                });
+            }
         }
     });
 }

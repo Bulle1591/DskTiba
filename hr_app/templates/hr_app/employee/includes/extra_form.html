@@ -2,10 +2,10 @@
 {% load widget_tweaks %}
 <!-- Modal -->
 <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 1350px;" role="document">
+  <div class="modal-dialog" style="max-width: 1550px;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-muted" id="modalFullTitle">Add New Employee</h4>
+        <h4 class="modal-title text-muted" id="modalFullTitle">Create New Employee</h4>
         <button type="button" class="btn-close"  data-close-action="close"></button>
       </div>
       <div class="modal-body">
@@ -24,7 +24,7 @@
                     <!-- User Authentication Section -->
                         <input type="hidden" name="emp_number" id="id_emp_number" value="{{ emp_number }}">
                         <div class="row mt-3">
-                              <div class="col-md-2 mb-2 fv-row">
+                              <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Title: <span class="tx-danger">*</span></label>
                                   {% render_field employee_form.salutation class="select2-basic-single" style="width: 100%;" %}
                               </div>
@@ -36,11 +36,11 @@
                                   <label class="form-label">Last Name: <span class="tx-danger">*</span></label>
                                   {% render_field user_form.last_name  placeholder="Enter Last Name" %}
                               </div>
-                              <div class="col-md-2 mb-2 fv-row">
+                              <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Gender: <span class="tx-danger">*</span></label>
                                   {% render_field employee_form.gender class="select2-basic-single" style="width: 100%;" %}
                               </div>
-                              <div class="col-md-2 mb-2 fv-row">
+                              <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Date Of Birth: <span class="tx-danger">*</span></label>
                                   {% render_field employee_form.date_of_birth id="Date Of Birth" %}
                               </div>
@@ -61,19 +61,27 @@
                                   <label class="form-label">Department: <span class="tx-danger">*</span></label>
                                   {% render_field employee_form.department class="select2-basic-single" style="width: 100%;" %}
                             </div>
-                            <div class="col-md-2 mb-2 fv-row">
+                            <div class="col-md-3 mb-2 fv-row">
+                                  <label class="form-label">Sub Department: <span class="tx-danger">*</span></label>
+                                  {% render_field employee_form.sub_department class="select2-basic-single" style="width: 100%;" %}
+                            </div>
+                            <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Contract: <span class="tx-danger">*</span></label>
                                   {% render_field employee_form.job_type class="select2-basic-single" style="width: 100%;" %}
                             </div>
-                             <div class="col-md-2 mb-2 fv-row">
+                             <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Date Joined: <span class="tx-danger">*</span></label>
                                   {% render_field employee_form.date_joined %}
+                            </div>
+                             <div class="col-md-3 mb-2 fv-row">
+                                  <label class="form-label">National ID: <span class="tx-danger">*</span></label>
+                                  {% render_field employee_form.national_id %}
                             </div>
                              <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Address: <span class="tx-danger">*</span></label>
                                   {% render_field contact_form.address %}
                             </div>
-                             <div class="col-md-2 mb-2 fv-row">
+                             <div class="col-md-3 mb-2 fv-row">
                                   <label class="form-label">Phone Number: <span class="tx-danger">*</span></label>
                                   {% render_field contact_form.phone_number  %}
                             </div>

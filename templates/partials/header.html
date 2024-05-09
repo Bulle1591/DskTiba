@@ -519,6 +519,7 @@
              </div>
           </div>
        </div>
+
        <div class="d-flex align-items-center">
           <button id="navbar-toggle" class="navbar-toggler" type="button" data-bs-toggle="collapse"
              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -567,6 +568,7 @@
                    </span>
                 </div>
              </li>
+
              <li class="nav-item dropdown iq-responsive-menu border-end d-block d-xl-none">
                 <div class="btn btn-sm bg-body" id="navbarDropdown-search-11" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
@@ -848,8 +850,8 @@
                       <hr class="dropdown-divider">
                    </li>
                    <li>
-                      <a class="dropdown-item" href="auth/sign-in.html">Logout</a>
-                   </li>
+                      <a class="dropdown-item" id="logoutLink" href="{% url 'auth_app:logout' %}">Logout</a>
+                  </li>
                 </ul>
              </li>
              <li class="nav-item iq-full-screen d-none d-xl-block" id="fullscreen-item">

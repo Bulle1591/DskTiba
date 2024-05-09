@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Requisition Note</title>
+
+  <style>
+    /* Bootstrap 5 CSS content here */
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css");
+
+    /* Custom styling for the table */
+    .table {
+      font-size: 0.8rem;
+    }
+
+    /* Custom styling for document details */
+    .document-details {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header class="mb-4">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <h2>PURCHASE REQUISITION NOTE</h2>
+      </div>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="col-md-6">
+      <span class="document-details">Document Number:</span>{{ requisition.requisition_id }}<br>
+      <span class="document-details">Document Date:</span>{{ requisition.requested_at }}<br>
+    </div>
+    <div class="col-md-6 text-start">
+      <span class="document-details">Store Requesting:</span>{{ requisition.supplier }}<br>
+      <span class="document-details">Store Issuing:</span>{{ requisition.sub_department.name }}<br>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <span class="document-details"><b>Officer Name:</b></span> {{ requisition.requested_by.full_name }}
+    </div>
+  </div>
+
+  <table class="table table-bordered table-striped mt-3" style="width:100%;">
+  <thead>
+    <tr style="background-color:#f8f9fa;">
+      <th scope="col" style="text-align: center;">#</th>
+      <th scope="col" style="text-align: center;">ITEM NAME</th>
+      <th scope="col" style="text-align: center;">QUANTITY REQUIRED</th>
+      <th scope="col" style="text-align: center;">DEPARTMENT QUANTITY</th>
+      <th scope="col" style="text-align: center;">STORE QUANTITY</th>
+      <th scope="col" style="text-align: center;">REMARK</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in requisition_items %}
+    <tr class="text-center" style="{% cycle 'background-color:#ffffff;' 'background-color:#e9ecef;' %}">
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ item.item_name }} {{ item.strength }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.quantity_in_sub_department }}</td>
+      <td>{{ item.quantity_on_hand }}</td>
+      <td>{{ item.remark }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+</body>
+</html>

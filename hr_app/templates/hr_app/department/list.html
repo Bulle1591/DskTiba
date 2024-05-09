@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
-{% block title %} Hospital Department {% endblock title %}
+{% block title %} Departmens {% endblock title %}
 
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
     <div class="d-flex flex-column">
-        <h3>Hospital Department</h3>
+        <h3>Departments</h3>
         <p class="text-primary mb-0">Administrator Dashboard</p>
     </div>
     <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
@@ -37,7 +37,7 @@
 <div class="container-fluid">
     <div class="mb-5">
             <div class="card-toolbar">
-                <button type="button" id="add-department" class="btn btn-sm custom-form-action-button btn-success me-2" data-bs-toggle="modal" data-bs-target="#departmentModal">Add New</button>
+                <button type="button" id="add-department" class="btn btn-sm custom-form-action-button btn-success me-2" data-bs-toggle="modal" data-bs-target="#departmentModal">Create New</button>
                 <a href="{% url 'hr_app:sub_department' %}" id="sub-department-page" class="btn btn-sm btn-info me-2">Sub Department Page</a>
                 <a href="{% url 'hr_app:department_type' %}" id="department-type-page" class="btn btn-sm btn-info me-2">Department Type Page</a>
                 <button type="button" id="delete-department" class="btn btn-sm btn-danger me-2">Delete Selected</button>

@@ -9,8 +9,8 @@ var departmentTypeTable;
 
         departmentTypeTable = $('#departmentTypeTable').DataTable({
         // New initialization options...
-        pageLength: 7,
-        lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         retrieve: true,
         serverSide: false,
         processing: true,

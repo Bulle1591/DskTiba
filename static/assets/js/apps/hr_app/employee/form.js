@@ -165,26 +165,22 @@
                     // Show loading indication
                     submitButton.setAttribute('data-kt-indicator', 'on');
 
-                    var formData = new FormData(form);  // Create new FormData object
-
                     $.ajax({
-                        url: $('#employeeForm').attr('action'),  // the url where we want to POST
+                        url: $(form).attr('action'),
                         headers: { "X-CSRFToken": getCookie("csrftoken") },
-                        type: 'POST',  // define the type of HTTP verb we want to use (POST for our form)
-                        data: new FormData($('#employeeForm')[0]),   // our data object
-                        processData: false,  // tell jQuery not to process the data
-                        contentType: false,  // tell jQuery not to set contentType
+                        type: 'POST',
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
                         success: function(data) {
                             // Hide loading indication
                             submitButton.setAttribute('data-kt-indicator', 'off');
 
                             if (data.success) {
                                 console.log('Form submitted successfully');
-
-                                // Refresh the table
                                 loadEmployees()
                                 Swal.fire({
-                                    text: data.message,  // Display the success message from the server
+                                    text: data.message,
                                     icon: "success",
                                     buttonsStyling: false,
                                     confirmButtonText: "Ok, got it!",
@@ -193,19 +189,15 @@
                                     }
                                 }).then(function (result) {
                                     if (result.isConfirmed) {
-                                        const formElement = document.querySelector('#employeeForm'); // Replace with your form's ID
-
-                                        formElement.reset(); // Reset form
-                                        // Close the modal when the user clicks "Ok, got it!"
+                                        form.reset();
                                         $('#addEmployeeModal').modal('hide');
-
                                     }
                                 });
                             } else {
                                 let errors = '';
-                                if (typeof data.error === 'object' && Object.keys(data.error).length > 0) {
-                                    $.each(data.error, function(key, value){
-                                        errors += '<p>' + key + ': ' + value + '</p>';
+                                if (data.error) {
+                                    $.each(data.error, function(field, messages){
+                                        errors += '<p>' + field + ': ' + messages.join(', ') + '</p>';
                                     });
                                 } else {
                                     errors = '<p>An error occurred, but no specific error messages were provided.</p>';
@@ -249,7 +241,6 @@
                 }
             });
         });
-
 
        // Cancel button handler
           const cancelButton = element.querySelector('[data-cancel-action="cancel"]');

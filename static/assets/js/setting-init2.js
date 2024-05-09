@@ -26,11 +26,11 @@
 
     const setting = (window.IQSetting = new IQSetting(
         {
-    "saveLocal": "localStorage",
+    "saveLocal": "sessionStorage",
     "storeKey": "huisetting-html",
     "setting": {
         "app_name": {
-            "value": "Dsk-Tiba"
+            "value": "Dsk Medix"
         },
         "theme_scheme_direction": {
             "value": "ltr"
@@ -43,7 +43,18 @@
                 "theme-flat",
                 "theme-sharp"
             ]
-        },   
+        },
+        "sidebar_show": {
+            "value": []
+        },
+        "sidebar_type": {
+            "value": [
+                "sidebar-mini",
+                "sidebar-hover",
+                "sidebar-boxed",
+                "sidebar-soft"
+            ]
+        },
     }
 }
     ));

@@ -1,0 +1,72 @@
+{% load static %}
+{% load widget_tweaks %}
+<div class="modal fade" id="equipmentCategoryModal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-lg modal-dialog-centered mw-700px">
+        <!--begin::Modal content-->
+        <div class="modal-content p-2 p-md-4">
+            <!--begin::Modal header-->
+            <!-- <div class="modal-header pb-0 border-0 justify-content-end">
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-close-action="close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+            </div> -->
+            <!--begin::Modal header-->
+
+            <!--begin::Modal body-->
+            <div class="modal-body px-10 px-lg-15 pt-0 pb-15"> <!--class scroll-y removed-->
+                <!--begin:Form-->
+                <form method="post" action="{% url 'inventory_app:equipment_category' %}" id="equipmentCategoryForm" novalidate="novalidate" autocomplete="off">
+                    {% csrf_token %}
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-left mb-3">
+                        <!--begin::Title-->
+                        <h2 class="form-title mb-3">Create Category</h2>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Heading-->
+                    <input type="hidden" name="id" value="{{ equipment_category.id }}">
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column fv-row mb-8">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span class="required">Name</span>
+                            <span class="ms-1"  data-bs-toggle="tooltip" title="Specify a target name for future usage and reference" >
+                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span>
+                        </label>
+                        <!--end::Label-->
+                        {% render_field form.name class="form-control form-control-solid" placeholder="Enter name" %}
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column fv-row mb-8">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span class="required">Description</span>
+                            <span class="ms-1"  data-bs-toggle="tooltip" title="Specify a target name for future usage and reference" >
+                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span>
+                        </label>
+                        <!--end::Label-->
+                        {% render_field form.description class="form-control form-control-solid" rows="5" placeholder="Enter Description" %}
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Actions-->
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-sm btn-100 btn-light custom-form-action-button me-3" data-cancel-action="cancel">Discard</button>
+                        <button type="submit" class="btn btn-sm btn-100 btn-primary custom-form-action-button" data-submit-action="submit">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>

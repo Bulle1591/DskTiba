@@ -20,8 +20,8 @@ class SubDepartmentMasterAdmin(admin.ModelAdmin):
 
 
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ['user', 'emp_number', 'qualification', 'licence_number', 'date_of_birth', 'date_joined',
-                    'designation', 'job_type', 'department', 'status']
+    list_display = ['user', 'emp_number', 'national_id', 'qualification', 'licence_number', 'date_of_birth', 'date_joined',
+                    'designation', 'job_type', 'department', 'sub_department', 'status']
     search_fields = ['user__username', 'emp_number', 'qualification', 'licence_number']
     list_filter = ['status', 'designation', 'job_type', 'department']
 

@@ -17,8 +17,11 @@
       <link rel="stylesheet" href="{% static 'assets/css/pro.min.css' %}" >
       <!-- Custom Css -->
       <link rel="stylesheet" href="{% static 'assets/css/custom.min.css' %}" >
+      <link rel="stylesheet" href="{% static 'assets/css/core/dsk.css' %}" />
       <!-- Dark Css -->
       <link rel="stylesheet" href="{% static 'assets/css/dark.min.css' %}" >
+      <!-- Sweetlaert2 css -->
+      <link rel="stylesheet" href="{% static 'assets/vendor/sweetalert2/dist/sweetalert2.min.css' %}"/>
       <!-- Customizer Css -->
       <link rel="stylesheet" href="{% static 'assets/css/customizer.min.css' %}" >
       <!-- RTL Css -->
@@ -27,16 +30,21 @@
       <link rel="preconnect" href="https://fonts.googleapis.com/">
       <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+
+
+      <!-- Roboto -->
+      <link href="{% static 'fonts/roboto/style.css' %}" rel="stylesheet" />
+
   </head>
   <body class=" ">
     <!-- loader Start -->
-    <div id="loading">
-      <div class="loader simple-loader">
-          <div class="loader-body">
-              <img src="{% static 'assets/images/loader.gif' %}" alt="loader" class="light-loader img-fluid w-25" width="50" height="50">
-          </div>
-      </div>
-    </div>
+<!--    <div id="loading">-->
+<!--      <div class="loader simple-loader">-->
+<!--          <div class="loader-body">-->
+<!--              <img src="{% static 'assets/images/loader.gif' %}" alt="loader" class="light-loader img-fluid w-40" width="50" height="50">-->
+<!--          </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <!-- loader END -->
     <div class="wrapper">
 
@@ -52,6 +60,8 @@
     
     <!-- Slider-tab Script -->
     <script src="{% static 'assets/js/plugins/slider-tabs.js' %}"></script>
+
+
     
     <!-- Lodash Utility -->
     <script src="{% static 'assets/vendor/lodash/lodash.min.js' %}"></script>
@@ -71,6 +81,13 @@
     <!-- Hopeui Script -->
     <script src="{% static 'assets/js/hope-ui.js' %}" defer></script>
     <script src="{% static 'assets/js/hope-uipro.js' %}" defer></script>
-    <script src="{% static 'assets/js/sidebar.js' %}" defer></script>  </body>
+    <script src="{% static 'assets/js/sidebar.js' %}" defer></script>
+
+    <!-- Sweet-alert Script -->
+    <script src="{% static 'assets/vendor/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/sweet-alert.js' %}"></script>
+    {% block extrajs %}{% endblock extrajs %}
+
+  </body>
 
 </html>

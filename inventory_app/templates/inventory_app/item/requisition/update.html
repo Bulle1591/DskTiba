@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Edit Requisition {% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
+    <div class="d-flex flex-column">
+        <h3>Edit Requisition</h3>
+        <p class="text-primary mb-0">Administrator Dashboard</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
+        <div class="form-check form-switch mb-0 iq-status-switch">
+            <input class="form-check-input iq-status" type="checkbox" id="iq-switch" checked="">
+            <label class="form-check-label iq-reset-status" for="iq-switch">
+                Online
+            </label>
+        </div>
+        <div class="form-group mb-0">
+            <select class="select2-basic-single form-control" name="state" style="width: 100%;">
+                <option >Past 30 Days</option>
+                <option >Past 60 Days</option>
+                <option >Past 90 Days</option>
+                <option >Past 1 year</option>
+                <option >Past 2 year</option>
+            </select>
+        </div>
+        <div class="form-group mb-0">
+            <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active" placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
+        </div>
+        <button type="button" class="btn btn-primary">Analytics</button>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="mb-5">
+        <div class="card-toolbar">
+        <a href="{% url 'inventory_app:requisition_order_new' %}" class="btn btn-sm custom-form-action-button btn-info me-2">Go Back</a>
+        </div>
+    </div>
+
+    <div class="card card-block card-stretch card-height" style="min-height: 330px;">
+        <div class="card-body">
+          {% include 'inventory_app/item/requisition/includes/forms/update.html' %}
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+
+
+{% block extrajs %}
+
+<script>
+$(document).ready(function() {
+    // Check if the user is a superuser
+    var is_superuser = {{ is_superuser|yesno:"true,false" }};
+
+    if (!is_superuser) {
+        // Replace this with the actual number of draft orders from your backend
+        var num_draft_orders = {{ num_draft_orders }};
+
+        if (num_draft_orders > 0) {
+            // Get the "Purchase Form" tab
+            var purchaseFormTab = document.getElementById('nav-add-11-tab');
+
+            // Remove the "data-bs-toggle" attribute to prevent the tab from being activated
+            purchaseFormTab.removeAttribute('data-bs-toggle');
+
+            // Show an alert when the "Purchase Form" tab is clicked
+            purchaseFormTab.addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You have ' + num_draft_orders + ' draft order(s). Please complete them before creating a new order.',
+                });
+            });
+        }
+    }
+});
+</script>
+<script>
+    $(document).ready(function() {
+    if (!user.is_superuser) {
+        $('#id_requested_by').select2().prop('disabled', true);
+        $('#id_sub_department').select2().prop('disabled', true);
+    }
+});
+</script>
+<script>
+    $(document).ready(function() {
+    // Function to show or hide fields based on requisition type
+    function updateFields() {
+        var requisitionType = $('#id_requisition_type').val();
+        if (requisitionType == 'store') {
+            $('.location-field').show();
+            $('.supplier-field').hide();
+        } else if (requisitionType == 'purchase') {
+            $('.location-field').hide();
+            $('.supplier-field').show();
+        }
+    }
+
+    // Call updateFields when the page loads
+    updateFields();
+
+    // Call updateFields whenever the requisition type changes
+    $('#id_requisition_type').change(updateFields);
+});
+</script>
+
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/load-items-script.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/load-categories-script.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/update-formset.js' %}"></script>
+
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/save-draft-submit.js' %}"></script>
+
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/draft/table.js' %}"></script>
+
+{% endblock extrajs %}

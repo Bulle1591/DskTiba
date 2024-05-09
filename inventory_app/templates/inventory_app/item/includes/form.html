@@ -1,0 +1,138 @@
+{% load static %}
+{% load widget_tweaks %}
+    <!--begin:Form-->
+    <form method="post" action="{% url 'inventory_app:item' %}" id="itemForm" novalidate="novalidate" autocomplete="off" data-item-subcategories-url="{% url 'inventory_app:ajax_load_item_subcategories' %}">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ item.id }}">
+        <!--begin::Input group-->
+    <!--    <h6 class="mb-2" style="text-decoration: underline;">Basic Information:</h6>-->
+        <div class="row g-9 mb-8">
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Name</label>
+                {% render_field form.name class="form-control form-control-solid" placeholder="Enter Name" %}
+            </div>
+            <!--end::Col-->
+
+             <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Type</label>
+                {% render_field form.item_type class="select2-basic-single form-select form-control" style="width: 100%;"%}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Category</label>
+                {% render_field form.category class="select2-basic-single form-select form-control" style="width: 100%;" %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Sub Category</label>
+                {% render_field form.subcategory class="select2-basic-single form-select form-control" style="width: 100%;"%}
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--begin::Input group-->
+        <div class="row g-9 mb-8">
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Unit Measure</label>
+                {% render_field form.unit_of_measure class="form-control form-control-solid" placeholder="Enter Unit of Measurement" %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Reorder Level</label>
+                {% render_field form.reorder_level class="form-control form-control-solid" rows="1" placeholder="Enter Quantity" %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Alert Quantity</label>
+                {% render_field form.alert_quantity class="form-control form-control-solid" placeholder="Enter Quantity" %}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-md-3 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Supplier</label>
+                {% render_field form.supplier class="select2-basic-single form-select form-control" style="width: 100%;" %}
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+
+        <!--begin::Input group-->
+        <div class="row g-9 mb-8" id="Pharmaceutical-Fields" style="display: none;">
+
+            <!--begin::Col-->
+            <div class="col-md-4 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Brand Name</label>
+                {% render_field form.brand_name  class="form-control form-control-solid" placeholder="Enter Brand Name" %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-4 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Dosage Form</label>
+                {% render_field form.dosage_form class="select2-basic-single form-select form-control" style="width: 100%;" %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-4 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Strength</label>
+                {% render_field form.strength class="form-control form-control-solid" placeholder="Enter Strength" %}
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+            <!--begin::Input group-->
+        <div class="row g-9 mb-8">
+            <!--begin::Col-->
+            <div class="col-md-6 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Storage Condition</label>
+                {% render_field form.storage_conditions class="form-control form-control-solid" rows="1" placeholder="Enter Store Condition" %}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-md-6 mb-4 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Description</label>
+                {% render_field form.description class="form-control form-control-solid" rows="1" placeholder="Enter Description" %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-2 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">PrescriptionRequired</label>
+                {% render_field form.requires_prescription %}
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-md-2 mb-2 fv-row">
+                <label class="required fs-6 fw-semibold mb-2">Sellable</label>
+                {% render_field form.can_be_sold %}
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Actions-->
+        <div class="text-end mt-3">
+            <button type="button" class="btn btn-sm btn-100 btn-light custom-form-action-button me-3" data-cancel-action="cancel">Clear</button>
+            <button type="submit" class="btn btn-sm btn-100 btn-primary" data-submit-action="submit" style="width: 200px;">
+                <span class="indicator-label">Submit</span>
+                <span class="indicator-progress">Please wait...
+                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+        <!--end::Actions-->
+    </form>
+    <!--end:Form-->
+

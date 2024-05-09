@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
-{% block title %} Hospital Staff {% endblock title %}
+{% block title %} Employee {% endblock title %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
     <div class="d-flex flex-column">
-        <h3>Staff</h3>
+        <h3>Employee</h3>
         <p class="text-primary mb-0">Administrator Dashboard</p>
     </div>
     <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
@@ -36,7 +36,7 @@
 
         <div class=" mb-5">
             <div class="card-toolbar">
-                <button type="button" id="add-role" class="btn btn-sm custom-form-action-button btn-primary me-2" data-bs-toggle="modal" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-target="#addEmployeeModal">Add Staff</button>
+                <button type="button" id="add-role" class="btn btn-sm custom-form-action-button btn-primary me-2" data-bs-toggle="modal" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-target="#addEmployeeModal">Create Employee</button>
             </div>
         </div>
         <div class="row g-4" id="employeeContainer">

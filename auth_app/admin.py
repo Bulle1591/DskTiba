@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AppUser, Role, AppGroup, Permission, GroupPermission, AppUserGroup
+from .models import AppUser, Role, AppGroup, Permission, GroupPermission, AppUserGroup, FailedLoginAttempt
 
 
 class AppUserAdmin(admin.ModelAdmin):
@@ -43,9 +43,16 @@ class AppUserGroupAdmin(admin.ModelAdmin):
     search_fields = ['user__email', 'group__name']
 
 
+class FailedLoginAttemptAdmin(admin.ModelAdmin):
+    list_display = ('username', 'timestamp', 'attempt_type', 'ip_address')
+    search_fields = ['username', 'ip_address']
+    list_filter = ['attempt_type']
+
+
 admin.site.register(AppUser, AppUserAdmin)
 admin.site.register(Role, RoleAdmin)
 admin.site.register(AppGroup, UserGroupAdmin)
 admin.site.register(Permission, PermissionAdmin)
 admin.site.register(GroupPermission, GroupPermissionAdmin)
 admin.site.register(AppUserGroup, AppUserGroupAdmin)
+admin.site.register(FailedLoginAttempt, FailedLoginAttemptAdmin)

@@ -1,16 +1,15 @@
 from django.urls import path
 from .views import UserGroupDataView, UserGroupCRUDView, UserGroupDeleteView, PermissionCRUDView, PermissionDataView, \
-    RoleCRUDView, RoleDataView, RoleCardView, RoleDetailView
-# from . import ajax_datatable_views
-from django.contrib.auth import views as auth_views
+    RoleCRUDView, RoleDataView, RoleCardView, RoleDetailView, LoginView, LogoutView
 
 app_name = 'auth_app'
 
 urlpatterns = [
 
     # AUTHENTICATION URLS
-    path('', auth_views.LoginView.as_view(template_name='auth_app/login/signin.html'),
-         name='login'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+
     # USER GROUPS URLS
     path('api/usergroup/', UserGroupCRUDView.as_view(), name='usergroup'),
     path('ajax_datatable/usergroup/', UserGroupDataView.as_view(), name='usergroup_data'),

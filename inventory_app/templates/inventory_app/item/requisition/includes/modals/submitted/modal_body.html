@@ -1,0 +1,125 @@
+{% load static %}
+<div class="card bg-label-secondary p-2">
+   <div class="row" style="font-size: 14px; text-transform: uppercase;">
+      <div class="col-md-6">
+            DATE: <span class="fw-medium" id="requisition_date2">{{ requisition_data.requested_at }}</span><br>
+            REFERENCE #: <span class="fw-medium" id="requisitionNumber">{{ requisition_data.requisition_id }}</span>
+            <input type="hidden" id="requisitionID">
+            <br> TYPE: <span class="text-primary" id="requisition_type">{{ requisition_data.requisition_type }}</span>
+            <br> STATUS: <span class="text-primary" id="status">{{ requisition_data.submission_status }}</span>
+      </div>
+      <div class="col-md-6 text-right order_barcodes ms-auto">
+         <img src="{% static 'assets/images/authentication-QR.png' %}" class="float-end" style="width: 76px;">
+      </div>
+   </div>
+</div>
+
+<div class="row mt-2 mb-2">
+   <!-- Column 1 - To: Fruits Supply Masters -->
+   <div class="col-6">
+      <h6>Office/Department:</h6>
+      <span class="fw-medium text-success" id="department">{{ requisition_data.sub_department }}</span><br>
+      <span id="created_by">{{ requisition_data.requested_by }}</span>
+      <br> Tel: <span id="phone_number">{{ requisition_data.phone_number }}</span>
+      <br> Email: <span id="email">{{ requisition_data.email }}</span>
+   </div>
+   <!-- Column 2 - From: Stock Manager Advance -->
+   <div class="col-6">
+      <h6>{% if requisition_data.requisition_type == 'Store' %}Warehouse/Store{% else %}Supplier/Vendor{% endif %}:</h6>
+      <span class="fw-medium text-success" id="warehouse">{{ requisition_data.issuer }}</span><br>
+      Address, City <br>
+      Tel: 012345678 <br>
+      Email: info@dskmedix.com
+   </div>
+</div>
+
+<!-- Table goes here -->
+<table id="{{ requisition_data.requisition_type | lower }}-formset-table" class="table table-bordered table-hover">
+    <thead>
+  <tr data-item-id="{{ item.id }}">
+     <th scope="col">Item Name</th>
+     <th scope="col">{% if requisition_data.requisition_type == 'Store' %}Requested Quantity{% else %}Quantity To Purchase{% endif %}</th>
+     <th scope="col">Department Quantity</th>
+     <th scope="col">Store Quantity</th>
+     <th scope="col">Remark</th>
+  </tr>
+</thead>
+<tbody>
+  {% for item in requisition_items %}
+  <tr>
+     <td>{{ item.item_name }} {{ item.strength }}</td>
+     <td>{{ item.quantity }}</td>
+     <td>{{ item.quantity_in_sub_department }}</td>
+     <td>{{ item.quantity_on_hand }}</td>
+     <td>{{ item.remark }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="row mb-2">
+   <div class="col-3 float-start">
+      <div class="bg-label-secondary p-2 mt-5">
+         Submitted by: <span class="created_by">{{ requisition_data.requested_by }}</span>
+         <br> Date: <span id="requisition_date">{{ requisition_data.requested_at }}</span>
+         <div class="signature" style="display: none;">
+            <p>Signature:</p>
+            <hr>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="row">
+   <div class="nav-align-top p-1" style="font-size: 11px; text-transform: uppercase;">
+      <div class="col-md-12 text-right">
+            <ul class="nav nav-tabs nav-fill" role="tablist">
+               {% if requisition_data.submission_status == 'Submitted' %}
+
+                  <!-- Different buttons for Store and Purchase -->
+                  {% if requisition_data.requisition_type == 'Store' %}
+                        {% if user.is_superuser or user.role.name == 'Admin' or user.role.name == 'Accountant' or user.role.name == 'Procurement Officer' %}
+                           <li class="nav-item me-1" id="updateStoreLink">
+                              {% if requisition_data.id %}
+                                 <a href="{% url 'inventory_app:requisition_order_edit' requisition_data.id %}" id="updateStoreRequisition" class="nav-link active bg-success"> MANAGE </a>
+                              {% endif %}
+                           </li>
+
+                           <li class="nav-item me-1" id="rejectStoreLink">
+                              <button type="button" id="rejectStoreRequisition" class="nav-link active bg-danger" role="tab" data-bs-toggle="tab" aria-controls="navs-justified-new" aria-selected="true"> REJECT </button>
+                           </li>
+                        {% endif %}
+
+                           <li class="nav-item me-1">
+                              {% if requisition_data.id %}
+                                 <a href="{% url 'inventory_app:generate_preview_purchase' requisition_data.id %}" target="_blank" id="generateStorePdfButton" type="button" class="nav-link active bg-secondary" role="tab"> GENERATE PDF </a>
+                              {% endif %}
+                           </li>
+                  {% else %}
+                        {% if user.is_superuser or user.role.name == 'Admin' or user.role.name == 'Accountant' or user.role.name == 'Procurement Officer' %}
+                           <li class="nav-item me-1" id="updateLink">
+                              {% if requisition_data.id %}
+                                 <a href="{% url 'inventory_app:purchase_requisition_order_manage' requisition_data.id %}" id="updateRequisition" class="nav-link active bg-success"> MANAGE </a>
+                              {% endif %}
+                           </li>
+
+                           <li class="nav-item me-1" id="rejectLink">
+                              <button type="button" id="rejectRequisition" class="nav-link active bg-danger" role="tab" data-bs-toggle="tab" aria-controls="navs-justified-new" aria-selected="true"> REJECT </button>
+                           </li>
+                        {% endif %}
+                           <li class="nav-item me-1">
+                              {% if requisition_data.id %}
+                                 <a href="{% url 'inventory_app:generate_preview_purchase' requisition_data.id %}" target="_blank" id="generatePdfButton" type="button" class="nav-link active bg-secondary" role="tab"> GENERATE PDF </a>
+                              {% endif %}
+                           </li>
+                  {% endif %}
+                  <!-- Common buttons for both Store and Purchase -->
+                  <li class="nav-item" id="closeNav">
+                        <button type="button" id="closeButton" class="nav-link active bg-secondary" role="tab" data-bs-toggle="tab" data-bs-dismiss="modal" aria-controls="navs-justified-new" aria-selected="true"> CLOSE </button>
+                  </li>
+               {% endif %}
+            </ul>
+      </div>
+   </div>
+   <!--End buttons-->
+</div>

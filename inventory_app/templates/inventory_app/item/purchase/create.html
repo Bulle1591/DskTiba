@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Item Purchase {% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
+    <div class="d-flex flex-column">
+        <h3>Purchase Order:</h3>
+        <p class="text-primary mb-0">Administrator Dashboard</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
+        <div class="form-check form-switch mb-0 iq-status-switch">
+            <input class="form-check-input iq-status" type="checkbox" id="iq-switch" checked="">
+            <label class="form-check-label iq-reset-status" for="iq-switch">
+                Online
+            </label>
+        </div>
+        <div class="form-group mb-0">
+            <select class="select2-basic-single form-control" name="state" style="width: 100%;">
+                <option >Past 30 Days</option>
+                <option >Past 60 Days</option>
+                <option >Past 90 Days</option>
+                <option >Past 1 year</option>
+                <option >Past 2 year</option>
+            </select>
+        </div>
+        <div class="form-group mb-0">
+            <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active" placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
+        </div>
+        <button type="button" class="btn btn-primary">Analytics</button>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="mb-5">
+        <div class="card-toolbar">
+        <a href="{% url 'inventory_app:item_category' %}" id="item-category-page" class="btn btn-sm custom-form-action-button btn-info me-2">Categories</a>
+        <a href="{% url 'inventory_app:item_subcategory' %}" id="item-subcategory-page" class="btn btn-sm custom-form-action-button btn-info me-2">Subcategories</a>
+        <a href="{% url 'inventory_app:item' %}" id="item-page" class="btn btn-sm custom-form-action-button btn-primary me-2">Items</a>
+        </div>
+    </div>
+
+    <div class="card card-block card-stretch card-height" style="min-height: 330px;">
+            <nav class="tab-bottom-bordered">
+                <div class="mb-0 nav nav-tabs justify-content-around" id="nav-tab1" role="tablist">
+                    <button class="nav-link nav-link-view-po py-3 active" id="nav-view-po-11-tab" data-bs-toggle="tab" data-bs-target="#nav-view-po-11" type="button" role="tab" aria-controls="nav-view-po-11" aria-selected="false" tabindex="-1">Purchase Orders</button>
+                    <button class="nav-link nav-link-add py-3" id="nav-add-11-tab" data-bs-toggle="tab" data-bs-target="#nav-add-11" type="button" role="tab" aria-controls="nav-add-11" aria-selected="false" tabindex="-1">Add New Purchase</button>
+                    <button class="nav-link nav-link-view-pi py-3" id="nav-view-pi-11-tab" data-bs-toggle="tab" data-bs-target="#nav-view-pi-11" type="button" role="tab" aria-controls="nav-view-pi-11" aria-selected="false" tabindex="-1">Purchased Items</button>
+                    <button class="nav-link nav-link-quantity py-3" id="nav-quantity-11-tab" data-bs-toggle="tab" data-bs-target="#nav-quantity-11" type="button" role="tab" aria-controls="nav-quantity-11" aria-selected="true">Drafts</button>
+                </div>
+            </nav>
+        <div class="tab-content iq-tab-fade-up" id="nav-tabContent" >
+
+            <div class="tab-pane fade tab-view-po active show" id="nav-view-po-11" role="tabpanel" aria-labelledby="nav-view-po-11-tab">
+
+                <div class="card-body">
+                  {% include 'inventory_app/item/purchase/includes/po-table.html' %}
+                </div>
+
+            </div>
+            <div class="tab-pane fade tab-purchase-item" id="nav-add-11" role="tabpanel" aria-labelledby="nav-add-11-tab">
+                <div class="card-body">
+                  {% include 'inventory_app/item/purchase/includes/add_form.html' %}
+                </div>
+
+            </div>
+            <div class="tab-pane fade tab-view-pi" id="nav-view-pi-11" role="tabpanel" aria-labelledby="nav-view-pi-11-tab">
+                <div class="card-body">
+                  {% include 'inventory_app/item/purchase/includes/pi-table.html' %}
+                </div>
+
+            </div>
+            <div class="tab-pane fade tab-quantity-item active show" id="nav-quantity-11" role="tabpanel" aria-labelledby="nav-quantity-11-tab">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+
+{% block extrajs %}
+
+<script>
+$(document).ready(function() {
+    // Check if the user is a superuser
+    var is_superuser = {{ is_superuser|yesno:"true,false" }};
+
+    if (!is_superuser) {
+        // Replace this with the actual number of draft orders from your backend
+        var num_draft_orders = {{ num_draft_orders }};
+
+        if (num_draft_orders > 0) {
+            // Get the "Purchase Form" tab
+            var purchaseFormTab = document.getElementById('nav-add-11-tab');
+
+            // Remove the "data-bs-toggle" attribute to prevent the tab from being activated
+            purchaseFormTab.removeAttribute('data-bs-toggle');
+
+            // Show an alert when the "Purchase Form" tab is clicked
+            purchaseFormTab.addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You have ' + num_draft_orders + ' draft order(s). Please complete them before creating a new order.',
+                });
+            });
+        }
+    }
+});
+</script>
+
+
+
+<!-- Formset -->
+<script src="{% static 'assets/js/apps/inventory_app/item/purchase/add_formset.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/purchase/add_form.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/purchase/pi_table.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/purchase/po_table.js' %}"></script>
+{% endblock extrajs %}

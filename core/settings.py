@@ -18,6 +18,9 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 APPEND_SLASH = False
 
+# SESSION_COOKIE_AGE = 900  # 15 minutes in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,6 +44,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'auth_app.middleware.DisableBrowserCacheMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -73,7 +77,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cure_craft',
+        'NAME': 'dskmedix',
         'USER': 'postgres',
         'PASSWORD': 'Bulle@1591@',
         'HOST': '127.0.0.1',
@@ -85,7 +89,7 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'curecraft',
+#         'NAME': 'dskmedix',
 #         'USER': 'root',
 #         'PASSWORD': '',
 #         'HOST': 'localhost',

@@ -30,7 +30,7 @@
                 "storeKey": "huisetting-html",
                 "setting": {
                     "app_name": {
-                        "value": "Cure-Craft"
+                        "value": "Dsk Mediato"
                     },  
                 }
             }

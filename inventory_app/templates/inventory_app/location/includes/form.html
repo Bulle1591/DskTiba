@@ -1,0 +1,70 @@
+{% load static %}
+{% load widget_tweaks %}
+<div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-lg mw-700px" style="margin-top: 170px;">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationModalModalLabel">
+                   <h3 class="form-title">Add New Warehouse</h3>
+                </h5>
+                <button type="button" class="btn-close" data-close-action="close"></button>
+            </div>
+
+            <!--begin::Modal body-->
+            <div class="modal-body px-10 px-lg-15 pt-0 pb-15"> <!--class scroll-y removed-->
+                <!--begin:Form-->
+                <form method="post" action="{% url 'inventory_app:location' %}" id="locationForm" novalidate="novalidate" autocomplete="off">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ location.id }}">
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column fv-row mb-8">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span class="required">Name</span>
+                            <span class="ms-1"  data-bs-toggle="tooltip" title="Specify a target name for future usage and reference" >
+                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span>
+                        </label>
+                        <!--end::Label-->
+                        {% render_field form.name class="form-control form-control-solid" rows="5" placeholder="Enter name" %}
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="row g-9 mb-8">
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Department</label>
+                            {% render_field form.department class="select2-basic-single form-select form-control" style="width: 100%;"  %}
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Sub Department</label>
+                            {% render_field form.sub_department class="select2-basic-single form-select form-control" style="width: 100%;" %}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Actions-->
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-sm btn-100 btn-light custom-form-action-button me-3" data-cancel-action="cancel">Discard</button>
+                        <button type="submit" class="btn btn-sm btn-100 btn-primary custom-form-action-button" data-submit-action="submit">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>

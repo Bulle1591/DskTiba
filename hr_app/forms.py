@@ -152,6 +152,7 @@ class EmployeeForm(forms.ModelForm):
         exclude = ['user', 'status']
 
     emp_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    national_id = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     qualification = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     licence_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     designation = forms.ModelChoiceField(
@@ -189,6 +190,13 @@ class EmployeeForm(forms.ModelForm):
                                    }))
     department = forms.ModelChoiceField(
         queryset=Department.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select form-select-sm',
+                                   'data-control': 'select2',
+                                   'data-allow-clear': 'false',
+                                   'data-dropdown-parent': '#addEmployeeModal',
+                                   }))
+    sub_department = forms.ModelChoiceField(
+        queryset=SubDepartmentMaster.objects.all(),
         widget=forms.Select(attrs={'class': 'form-select form-select-sm',
                                    'data-control': 'select2',
                                    'data-allow-clear': 'false',

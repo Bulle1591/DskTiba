@@ -83,6 +83,9 @@
                                       const formElement = document.querySelector('#subDepartmentForm'); // Replace with your form's ID
 
                                       formElement.reset(); // Reset form
+
+                                      // Reset each Select2 dropdown in the form
+                                      $('#id_department').val(null).trigger('change');
                                       // Close the modal when the user clicks "Ok, got it!"
                                       $('#subDepartmentModal').modal('hide');
 

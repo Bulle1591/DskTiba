@@ -1,0 +1,136 @@
+{% load static %}
+<div class="card bg-label-secondary p-2">
+   <div class="row">
+      <div class="col-md-6">
+            Date: <span class="fw-medium" id="requisition_date2">{{ requisition_data.requested_at }}</span><br>
+            Reference: <span class="fw-medium" id="requisitionNumber">{{ requisition_data.requisition_id }}</span>
+            <input type="hidden" id="requisitionID">
+            <br> Requisition Type: <span class="text-primary" id="requisition_type">{{ requisition_data.requisition_type }}</span>
+            <br> Submission Status: <span class="text-primary" id="status">{{ requisition_data.submission_status }}</span>
+      </div>
+      <div class="col-md-6 text-right order_barcodes ms-auto">
+         <img src="{% static 'assets/images/authentication-QR.png' %}" class="float-end" style="width: 76px;">
+      </div>
+   </div>
+</div>
+<div class="row mt-2 mb-2">
+   <!-- Column 1 - To: Fruits Supply Masters -->
+   <div class="col-6">
+      <h6>Requesting Office:</h6>
+      <span class="fw-medium text-warning" id="department">{{ requisition_data.sub_department }}</span><br>
+      <span id="created_by">{{ requisition_data.requested_by }}</span>
+      <br> Tel: <span id="phone_number">{{ requisition_data.phone_number }}</span>
+      <br> Email: <span id="email">{{ requisition_data.email }}</span>
+   </div>
+   <!-- Column 2 - From: Stock Manager Advance -->
+   <div class="col-6">
+      <h6>Issuer:</h6>
+      <span class="fw-medium text-success" id="warehouse">{{ requisition_data.issuer }}</span><br>
+      Address, City <br>
+      Tel: 012345678 <br>
+      Email: info@dskmedix.com
+   </div>
+</div>
+<!-- Table goes here -->
+{% if requisition_data.requisition_type == 'Store' %}
+    <!-- Table structure for 'store' requisition type -->
+    <table id="store-formset-table" class="table table-bordered table-hover">
+        <thead>
+      <tr data-item-id="{{ item.id }}">
+         <th scope="col">Item Name</th>
+         <th scope="col">Requested Quantity</th>
+         <th scope="col">Department Quantity</th>
+         <th scope="col">Store Quantity</th>
+         <th scope="col">Remark</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for item in requisition_items %}
+      <tr>
+         <td>{{ item.item_name }} {{ item.strength }}</td>
+         <td>{{ item.quantity }}</td>
+         <td>{{ item.quantity_on_hand }}</td>
+         <td>{{ item.quantity_on_hand }}</td>
+         <td>{{ item.remark }}</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+    </table>
+{% elif requisition_data.requisition_type == 'Purchase' %}
+    <!-- Table structure for 'purchase' requisition type -->
+    <table id="purchase-formset-table" class="table table-bordered table-hover">
+        <thead>
+      <tr data-item-id="{{ item.id }}">
+         <th scope="col">Item Name</th>
+         <th scope="col">Quantity To Purchase</th>
+         <th scope="col">Department Quantity</th>
+         <th scope="col">Remark</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for item in requisition_items %}
+      <tr>
+         <td>{{ item.item_name }} {{ item.strength }}</td>
+         <td>{{ item.quantity }}</td>
+         <td>{{ item.quantity_on_hand }}</td>
+         <td>{{ item.remark }}</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+    </table>
+{% endif %}
+<div class="row">
+   <div class="col-3 float-start">
+      <div class="bg-label-secondary p-2 mt-5">
+         Created by: <span class="created_by">{{ requisition_data.requested_by }}</span>
+         <br> Date: <span id="requisition_date">{{ requisition_data.requested_at }}</span>
+         <div class="signature" style="display: none;">
+            <p>Signature:</p>
+            <hr>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="row">
+   <div class="nav-align-top p-4">
+      <div class="col-md-12 text-right">
+            <ul class="nav nav-tabs nav-fill" role="tablist">
+               {% if requisition_data.submission_status == 'Draft' %}
+                  <!-- Common buttons for both Store and Purchase -->
+                  <li class="nav-item" id="updateLink">
+                     {% if requisition_data.id %}
+                        <a href="{% url 'inventory_app:requisition_order_edit' requisition_data.id %}" id="updateRequisition" class="nav-link active bg-success"> Update </a>
+                     {% endif %}
+                  </li>
+                  <li class="nav-item" id="rejectLink">
+                     <button type="button" id="rejectRequisition" class="nav-link active bg-danger" role="tab" data-bs-toggle="tab" aria-controls="navs-justified-new" aria-selected="true"> Delete </button>
+                  </li>
+                  <li class="nav-item">
+                     {% if requisition_data.id %}
+                        <form id="draftToSubmittedForm" method="post" action="{% url 'inventory_app:draft_to_submitted' requisition_data.id %}">
+                            {% csrf_token %}
+                            <button type="submit" id="submitButton" class="nav-link active bg-info" data-url="{% url 'inventory_app:draft_to_submitted' requisition_data.id %}">Submit As Final</button>
+                        </form>
+                     {% endif %}
+                  </li>
+                  <!-- Different buttons for Store and Purchase -->
+                  {% if requisition_data.requisition_type == 'Store' %}
+                     <li class="nav-item">
+                        {% if requisition_data.id %}
+                           <a href="{% url 'inventory_app:generate_preview_store' requisition_data.id %}" target="_blank" id="storeGeneratePdfButton" type="button" class="nav-link active bg-secondary" role="tab"> Generate S PDF </a>
+                        {% endif %}
+                     </li>
+                  {% else %}
+                     <li class="nav-item">
+                        {% if requisition_data.id %}
+                           <a href="{% url 'inventory_app:generate_preview_purchase' requisition_data.id %}" target="_blank" id="generatePdfButton" type="button" class="nav-link active bg-secondary" role="tab"> Generate PDF </a>
+                        {% endif %}
+                     </li>
+                  {% endif %}
+               {% endif %}
+            </ul>
+      </div>
+   </div>
+   <!--End buttons-->
+</div>

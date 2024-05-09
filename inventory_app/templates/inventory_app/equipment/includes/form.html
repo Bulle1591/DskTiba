@@ -1,0 +1,140 @@
+{% load static %}
+{% load widget_tweaks %}
+<!--begin:Form-->
+<form method="post" action="{% url 'inventory_app:equipment' %}" id="equipmentForm" novalidate="novalidate" autocomplete="off" data-equipment-subcategories-url="{% url 'inventory_app:ajax_load_equipment_subcategories' %}">
+    {% csrf_token %}
+    <!--begin::Heading-->
+    <div class="mb-13 text-left mb-3">
+        <!--begin::Title-->
+        <h2 class="form-title mb-3">Add Equipment</h2>
+        <!--end::Title-->
+    </div>
+    <!--end::Heading-->
+    <input type="hidden" name="id" value="{{ equipment.id }}">
+    <!--begin::Input group-->
+<!--    <h6 class="mb-2" style="text-decoration: underline;">Basic Information:</h6>-->
+    <div class="row g-9 mb-8">
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Name</label>
+            {% render_field form.name class="form-control form-control-solid" placeholder="Enter Name" %}
+        </div>
+        <!--end::Col-->
+
+         <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Manufacturer</label>
+            {% render_field form.manufacturer class="form-control form-control-solid" placeholder="Enter Manufacturer" %}
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Model Number</label>
+            {% render_field form.model_number class="form-control form-control-solid" placeholder="Enter Model Number" %}
+        </div>
+        <!--end::Col-->
+    </div>
+    <!--begin::Input group-->
+    <div class="row g-9 mb-8">
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Serial Number</label>
+            {% render_field form.serial_number class="form-control form-control-solid" placeholder="Enter Serial Number" %}
+        </div>
+        <!--end::Col-->
+
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Quantity on Hand</label>
+            {% render_field form.quantity_on_hand class="form-control form-control-solid" rows="1" placeholder="Enter Quantity on Hand" %}
+        </div>
+        <!--end::Col-->
+
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Status</label>
+            {% render_field form.status class="select2-basic-single form-select form-control" style="width: 100%;" %}
+        </div>
+        <!--end::Col-->
+    </div>
+    <!--end::Input group-->
+
+      <!--begin::Input group-->
+    <div class="row g-9 mb-8">
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Supplier</label>
+            {% render_field form.supplier class="select2-basic-single form-select form-control" style="width: 100%;" %}
+        </div>
+        <!--end::Col-->
+
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Category</label>
+            {% render_field form.category class="select2-basic-single form-select form-control" style="width: 100%;" %}
+        </div>
+        <!--end::Col-->
+
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Sub Category</label>
+            {% render_field form.subcategory class="select2-basic-single form-select form-control" style="width: 100%;"%}
+        </div>
+        <!--end::Col-->
+    </div>
+    <!--end::Input group-->
+
+      <!--begin::Input group-->
+    <div class="row g-9 mb-8">
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Warranty</label>
+            {% render_field form.warranty_information class="form-control form-control-solid" rows="1" placeholder="Enter Warranty" %}
+        </div>
+        <!--end::Col-->
+
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Maintenance Schedule</label>
+            {% render_field form.maintenance_schedule class="form-control form-control-solid" rows="1" placeholder="Enter Maintenance Schedule" %}
+        </div>
+        <!--end::Col-->
+
+        <!--begin::Col-->
+        <div class="col-md-4 mb-2 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Usage Instructions</label>
+            {% render_field form.usage_instructions class="form-control form-control-solid" rows="1" placeholder="Enter Usage Instructions" %}
+        </div>
+        <!--end::Col-->
+    </div>
+    <!--end::Input group-->
+    <!--begin::Input group-->
+    <div class="row g-9 mb-8">
+        <!--begin::Col-->
+        <div class="col-md-12 mb-4 fv-row">
+            <label class="required fs-6 fw-semibold mb-2">Description</label>
+            {% render_field form.description class="form-control form-control-solid" rows="1" placeholder="Enter Description" %}
+        </div>
+        <!--end::Col-->
+    </div>
+    <!--end::Input group-->
+
+
+    <!--begin::Actions-->
+    <div class="text-end mt-3">
+        <button type="button" class="btn btn-sm btn-100 btn-light custom-form-action-button me-3" data-cancel-action="cancel">Clear</button>
+<!--        <button type="submit" class="btn btn-sm btn-100 btn-soft-primary custom-form-action-button" data-submit-action="save-draft">-->
+<!--            <span class="indicator-label">Save Draft</span>-->
+<!--            <span class="indicator-progress">Please wait...-->
+<!--            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>-->
+<!--        </button>-->
+        <button type="submit" class="btn btn-sm btn-100 btn-primary" data-submit-action="submit" style="width: 200px;">
+            <span class="indicator-label">Submit</span>
+            <span class="indicator-progress">Please wait...
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+        </button>
+    </div>
+    <!--end::Actions-->
+</form>
+<!--end:Form-->
+

@@ -1,0 +1,87 @@
+{% load static %}
+{% load widget_tweaks %}
+<div class="modal fade" id="supplierModal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+     <div class="modal-dialog modal-lg mw-700px" style="margin-top: 170px;">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="supplierModalModalLabel">
+                   <h3 class="form-title">Add New Supplier</h3>
+                </h5>
+                <button type="button" class="btn-close" data-close-action="close"></button>
+            </div>
+            <!--begin::Modal body-->
+            <div class="modal-body"> <!--class scroll-y removed-->
+                <!--begin:Form-->
+                <form method="post" action="{% url 'inventory_app:supplier' %}" id="supplierForm" novalidate="novalidate" autocomplete="off">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ supplier.id }}">
+                    <!--begin::Input group-->
+                    <div class="row g-9 mb-8">
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Name</label>
+                            {% render_field form.name class="form-control form-control-solid" placeholder="Enter Name" %}
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Email</label>
+                            {% render_field form.email class="form-control form-control-solid" placeholder="Enter Email" %}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="row g-9 mb-8">
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Contact Person</label>
+                            {% render_field form.contact_person class="form-control form-control-solid" placeholder="Enter Contact Person" %}
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Contact Number</label>
+                            {% render_field form.contact_number class="form-control form-control-solid" placeholder="Enter Contact Number" %}
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column fv-row mb-8">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span class="required">Address</span>
+                            <span class="ms-1"  data-bs-toggle="tooltip" title="Specify a target name for future usage and reference" >
+                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span>
+                        </label>
+                        <!--end::Label-->
+                        {% render_field form.address class="form-control form-control-solid" rows="3" placeholder="Enter Address" %}
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Actions-->
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-sm btn-100 btn-light custom-form-action-button me-3" data-cancel-action="cancel">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-100 btn-primary custom-form-action-button" data-submit-action="submit">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>

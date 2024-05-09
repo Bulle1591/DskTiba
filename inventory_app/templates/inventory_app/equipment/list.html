@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Equipment {% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
+    <div class="d-flex flex-column">
+        <h3>Equipments</h3>
+        <p class="text-primary mb-0">Administrator Dashboard</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
+        <div class="form-check form-switch mb-0 iq-status-switch">
+            <input class="form-check-input iq-status" type="checkbox" id="iq-switch" checked="">
+            <label class="form-check-label iq-reset-status" for="iq-switch">
+                Online
+            </label>
+        </div>
+        <div class="form-group mb-0">
+            <select class="select2-basic-single form-control" name="state" style="width: 100%;">
+                <option >Past 30 Days</option>
+                <option >Past 60 Days</option>
+                <option >Past 90 Days</option>
+                <option >Past 1 year</option>
+                <option >Past 2 year</option>
+            </select>
+        </div>
+        <div class="form-group mb-0">
+            <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active" placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
+        </div>
+        <button type="button" class="btn btn-primary">Analytics</button>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="mb-5">
+        <div class="card-toolbar">
+        <a href="{% url 'inventory_app:equipment_category' %}" id="equipment-category-page" class="btn btn-sm custom-form-action-button btn-info me-2">Categories</a>
+        <a href="{% url 'inventory_app:equipment_subcategory' %}" id="equipment-page" class="btn btn-sm custom-form-action-button btn-info me-2">Subcategories</a>
+        <a href="{% url 'inventory_app:equipment_subcategory' %}" id="purchase-equipment-page" class="btn btn-sm custom-form-action-button btn-primary me-2">Purchases</a>
+        </div>
+    </div>
+
+    <div class="card card-block card-stretch card-height" style="min-height: 330px;">
+            <nav class="tab-bottom-bordered">
+                <div class="mb-0 nav nav-tabs justify-content-around" id="nav-tab1" role="tablist">
+                    <button class="nav-link nav-link-add py-3 active" id="nav-add-11-tab" data-bs-toggle="tab" data-bs-target="#nav-add-11" type="button" role="tab" aria-controls="nav-add-11" aria-selected="false" tabindex="-1">Add/Update Equipment</button>
+                    <button class="nav-link nav-link-view py-3" id="nav-view-11-tab" data-bs-toggle="tab" data-bs-target="#nav-view-11" type="button" role="tab" aria-controls="nav-view-11" aria-selected="false" tabindex="-1">View Equipments</button>
+                    <button class="nav-link nav-link-quantity py-3" id="nav-quantity-11-tab" data-bs-toggle="tab" data-bs-target="#nav-quantity-11" type="button" role="tab" aria-controls="nav-quantity-11" aria-selected="true">Quantity On Hand</button>
+                </div>
+            </nav>
+        <div class="tab-content iq-tab-fade-up" id="nav-tabContent" >
+            <div class="tab-pane fade tab-add-equipment active show" id="nav-add-11" role="tabpanel" aria-labelledby="nav-add-11-tab">
+            <div class="card-body">
+              {% include 'inventory_app/equipment/includes/form.html' %}
+            </div>
+
+            </div>
+            <div class="tab-pane fade tab-view-equipment" id="nav-view-11" role="tabpanel" aria-labelledby="nav-view-11-tab">
+                <div class="mt-2 ms-4">
+                    <div class="card-toolbar">
+                        <button type="button" id="delete-equipment" class="btn btn-sm btn-danger me-2">Delete Selected</button>
+                        <select class="select2-basic-single form-control" id="equipment-status-filter" style="width: 200px;">
+                            <option value="">All Status</option>
+                            <!-- Add options for each equipment type here -->
+                            {% for status, name in statuses %}
+                                <option value="{{ status }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select class="select2-basic-single form-control" id="category-filter" style="width: 250px;">
+                            <option value="">All Category</option>
+                            <!-- Add options for each category here -->
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select class="select2-basic-single form-control" id="subcategory-filter" style="width: 250px;">
+                            <option value="">All Subcategory</option>
+                            <!-- Add options for each subcategory here -->
+                            {% for subcategory in subcategories %}
+                                <option value="{{ subcategory.id }}">{{ subcategory.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                </div>
+
+
+
+                <div class="card-body">
+                  {% include 'inventory_app/equipment/includes/table.html' %}
+                </div>
+
+            </div>
+            <div class="tab-pane fade tab-quantity-equipment active show" id="nav-quantity-11" role="tabpanel" aria-labelledby="nav-quantity-11-tab">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+
+{% block extrajs %}
+<script src="{% static 'assets/js/apps/inventory_app/equipment/table.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/equipment/form.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/equipment/update.js' %}"></script>
+<!-- Dependent Category/Subcategory chain -->
+<script src="{% static 'assets/js/apps/inventory_app/equipment/category_subcategory_dependent.js' %}"></script>
+
+{% endblock extrajs %}

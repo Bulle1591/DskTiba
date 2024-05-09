@@ -107,6 +107,17 @@
           </div>
           <div class="col-lg-3">
             <div class="form-group">
+              <label class="form-label" for="user_department">Department: <span class="tx-danger">*</span></label>
+              <select class="select2 w-100" name="department" id="user_subdepartment" data-placeholder="Nothing selected" required>
+                <option value="">Select Department</option>
+                {% for subdepartment in subdepartments %}
+                <option value="{{ subdepartment.id }}">{{ subdepartment.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
               <label class="form-label" for="user_profession">Designation: <span class="tx-danger">*</span></label>
               <select class="select2 w-100form-control" name="profession" id="user_profession" data-placeholder="Nothing selected" required>
                 <option value="">Select Designation</option>

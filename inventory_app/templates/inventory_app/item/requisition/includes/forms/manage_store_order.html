@@ -1,0 +1,132 @@
+{% load static %}
+{% load widget_tweaks %}
+<!--begin:Form-->
+<form method="post" action="/store_requisition_order/manage/{{ requisition.id }}/" id="ManageRequisitionOrderForm" novalidate="novalidate" autocomplete="off">
+    {% csrf_token %}
+    <input type="hidden" id="requisitionId" name="requisition_id" value="{{ requisition.id }}">
+    <!--begin::Heading-->
+    <div class="mb-13 text-left mb-3 d-flex justify-content-between align-items-center"><!--begin::Title-->
+    <p class="mb-0">
+        <button type="button" class="btn btn-outline-primary btn-sm" disabled>Requisition Number: {{ requisition_id }}</button>
+        <button type="button" class="btn btn-outline-info btn-sm" disabled>Created By: {{ requisition.requested_by }}</button>
+        <button type="button" class="btn btn-outline-success btn-sm" disabled>Date Created: {{ requisition.requested_at }}</button>
+    </p>
+    <!--end::Title-->
+
+
+        <button id="removeAllRowsButton" class="btn btn-sm custom-form-action-button btn-danger" style="display: none;">Remove All Rows</button>
+    </div>
+
+    <!--end::Heading-->
+
+    <!--begin::Input group-->
+    <div class="row g-9 mb-8" style="display: none;">
+     <div class="col-md-3 mb-2 fv-row">
+        <label class="required fs-6 fw-semibold mb-2">Office Requesting:</label>
+        {% render_field form.sub_department class="select2-basic-single form-select form-control" style="width: 100%;" readonly="readonly" %}
+    </div>
+    <div class="col-md-3 mb-2 fv-row">
+        <label class="required fs-6 fw-semibold mb-2">Requisition Type:</label>
+          {% render_field form.requisition_type class="select2-basic-single form-select form-control" style="width: 100%;" readonly="readonly" %}
+    </div>
+    <div class="col-md-3 mb-2 fv-row">
+        <label class="required fs-6 fw-semibold mb-2">Officer Requesting:</label>
+        {% render_field form.requested_by class="select2-basic-single form-select form-control" style="width: 100%;" readonly="readonly" %}
+    </div>
+    <div class="col-md-3 mb-2 fv-row location-field">
+        <label class="required fs-6 fw-semibold mb-2">From Store:</label>
+        {% render_field form.location class="select2-basic-single form-select form-control" style="width: 100%;" readonly="readonly" %}
+    </div>
+    <div class="col-md-3 mb-2 fv-row supplier-field" style="display: none;">
+        <label class="required fs-6 fw-semibold mb-2">Suggested Supplier:</label>
+        {% render_field form.supplier class="select2-basic-single form-select form-control" style="width: 100%;" readonly="readonly" %}
+    </div>
+    <div class="col-md-12 mb-2 fv-row">
+        <label class="required fs-6 fw-semibold mb-2">Description:</label>
+        {% render_field form.description class="form-control" rows="1" readonly="readonly" %}
+    </div>
+        <!--begin::Col-->
+    <div class="col-md-4 mt-3 mb-2 fv-row">
+        {% render_field form.agree_to_terms class="form-check-input" %}
+        <label class="fs-6 fw-semibold mb-2">Agree to Requisition Terms and Conditions:</label>
+    </div>
+    <!--end::Col-->
+    </div>
+
+    <!--end::Input group-->
+
+    <div class="mt-5" style="display: flex; width: 100%;">
+        <div class="ms-1" style="flex: 100;">
+            <!-- PurchaseOrderItem table goes here -->
+             <div class="table-responsive">
+                <!--Formset table for adding item forms-->
+                <table id="requisitionTable" class="table items table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-item">Item</th>
+                            <th class="col-quantity-on-hand">Store Balance</th>
+                            <th class="col-dep-quantity">Department Requested Balance</th>
+                            <th class="col-quantity">In-Need Quantity</th>
+                            <th class="col-quantity">Enter Quantity To Approve</th>
+                            <th class="col-note">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ui-sortable">
+                       {{ item_requisition_item_formset.management_form }}
+                        {% for item_form in item_requisition_item_formset %}
+                            {% if item_form.instance.pk %}
+
+                                <tr class="item-formset initial-row">
+                                    {{ item_form.id.as_hidden }}
+                                    <td class="custom-td">
+                                        <span class="item-name">{{ item_form.instance.item.name }} {{ item_form.instance.item.strength }}</span>
+                                        {{ item_form.item.as_hidden }}
+                                        <i class="float-end fas fa-edit tip edit" title="Edit" style="cursor:pointer;"></i>
+                                    </td>
+                                    <td class="fv-row"><span class="item-quantity">{{ item_form.instance.item.quantity_on_hand }}</span></td>
+                                    <td class="fv-row"><span class="department-quantity"></span>0</td>
+                                    <td class="fv-row text-center">
+                                        {% render_field item_form.quantity  class="form-control" %}
+                                    </td>
+                                    <td class="fv-row text-center">
+                                        {% render_field item_form.approved_quantity  class="form-control" %}
+                                    </td>
+                                    <td class="fv-row text-center">
+                                        {% render_field item_form.remark  class="form-control" rows="1" %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <p class="mb-5 mt-5">
+     <!--   <button type="button" class="btn btn-outline-info btn-sm" disabled>Approver: {{ user.full_name }}</button>-->
+    </p>
+
+    <!--begin::Actions-->
+    <div class="text-end mb-2">
+        <button type="submit" class="btn btn-sm btn-100 btn-soft-danger btn-submit" data-submit-action="reject" style="width: 150px;">
+            <span class="indicator-label">Reject</span>
+            <span class="indicator-progress">
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+        </button>
+        <button type="submit" class="btn btn-sm btn-100 btn-success btn-submit" data-submit-action="approve" style="width: 150px;">
+            <span class="indicator-label">Approve</span>
+            <span class="indicator-progress">Please wait...
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+        </button>
+        <button type="submit" class="btn btn-sm btn-100 btn-soft-warning btn-submit" data-submit-action="under-review" style="width: 150px;">
+            <span class="indicator-label">Under Review</span>
+            <span class="indicator-progress">Please wait...
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+        </button>
+    </div>
+    <!--end::Actions-->
+</form>
+<!--end:Form-->

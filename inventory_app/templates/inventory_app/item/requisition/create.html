@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Item Requisition {% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
+  <div class="d-flex flex-column">
+    <h3>Item Requisition</h3>
+    <p class="text-primary mb-0">Administrator Dashboard</p>
+  </div>
+  <div class="d-flex justify-content-between align-items-center rounded flex-wrap gap-3">
+    <div class="form-check form-switch mb-0 iq-status-switch">
+      <input class="form-check-input iq-status" type="checkbox" id="iq-switch" checked="">
+      <label class="form-check-label iq-reset-status" for="iq-switch"> Online </label>
+    </div>
+    <div class="form-group mb-0">
+      <select class="select2-basic-single form-control" name="state" style="width: 100%;">
+        <option>Past 30 Days</option>
+        <option>Past 60 Days</option>
+        <option>Past 90 Days</option>
+        <option>Past 1 year</option>
+        <option>Past 2 year</option>
+      </select>
+    </div>
+    <div class="form-group mb-0">
+      <input type="text" name="start" class="form-control range_flatpicker flatpickr-input active" placeholder="24 Jan 2022 to 23 Feb 2022" readonly="readonly">
+    </div>
+    <button type="button" class="btn btn-primary">Analytics</button>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="mb-5">
+    <div class="card-toolbar">
+      <a href="{% url 'dashboard_app:dashboard' %}" class="btn btn-sm btn-info me-2">Back To Dashboard</a>
+    </div>
+  </div>
+  <div class="card card-block card-stretch card-height" style="min-height: 330px;">
+   <nav class="tab-bottom-bordered">
+    <div class="mb-0 nav nav-tabs justify-content-around" id="nav-tab1" role="tablist">
+        <button class="nav-link nav-link-add py-3 active" id="nav-add-11-tab" data-bs-toggle="tab" data-bs-target="#nav-add-11" type="button" role="tab" aria-controls="nav-add-11" aria-selected="false" tabindex="-1">Create New</button>
+        <button class="nav-link nav-link-draft py-3" id="nav-draft-11-tab" data-bs-toggle="tab" data-bs-target="#nav-draft-11" type="button" role="tab" aria-controls="nav-draft-11" aria-selected="false" tabindex="-1"><span class="badge bg-light me-2">{{ num_draft_requisitions }}</span> Drafts </button>
+        <button class="nav-link nav-link-submitted py-3" id="nav-submitted-11-tab" data-bs-toggle="tab" data-bs-target="#nav-submitted-11" type="button" role="tab" aria-controls="nav-submitted-11" aria-selected="false" tabindex="-1"><span class="badge bg-primary me-2">{{ num_submitted_requisitions }}</span> Submitted </button>
+        <button class="nav-link nav-link-under-review py-3" id="nav-under-review-11-tab" data-bs-toggle="tab" data-bs-target="#nav-under-review-11" type="button" role="tab" aria-controls="nav-under-review-11" aria-selected="false" tabindex="-1"><span class="badge bg-warning me-2">{{ num_under_review_requisitions }}</span> Under Review </button>
+        <button class="nav-link nav-link-approved py-3" id="nav-approved-11-tab" data-bs-toggle="tab" data-bs-target="#nav-approved-11" type="button" role="tab" aria-controls="nav-approved-11" aria-selected="false" tabindex="-1"><span class="badge bg-success me-2">{{ num_approved_requisitions }}</span> Approved </button>
+        <button class="nav-link nav-link-rejected py-3" id="nav-rejected-11-tab" data-bs-toggle="tab" data-bs-target="#nav-rejected-11" type="button" role="tab" aria-controls="nav-rejected-11" aria-selected="false" tabindex="-1"><span class="badge bg-danger me-2">{{ num_rejected_requisitions }}</span> Rejected </button>
+    </div>
+</nav>
+
+    <div class="tab-content iq-tab-fade-up" id="nav-tabContent">
+      <!-- Tab for Create New -->
+      <div class="tab-pane fade tab-purchase-item active show" id="nav-add-11" role="tabpanel" aria-labelledby="nav-add-11-tab">
+        <div class="card-body"> {% include 'inventory_app/item/requisition/includes/forms/add.html' %} </div>
+      </div>
+      <!-- Tab for Drafts -->
+      <div class="tab-pane fade tab-draft" id="nav-draft-11" role="tabpanel" aria-labelledby="nav-draft-11-tab">
+        <div class="card-body"> {% include 'inventory_app/item/requisition/includes/tables/draft.html' %} </div>
+      </div>
+      <!-- Tab for Submitted -->
+      <div class="tab-pane fade tab-submitted" id="nav-submitted-11" role="tabpanel" aria-labelledby="nav-submitted-11-tab">
+        <div class="card-body"> {% include 'inventory_app/item/requisition/includes/tables/submitted.html' %} </div>
+      </div>
+      <!-- Tab for Under-Review -->
+      <div class="tab-pane fade tab-under-review" id="nav-under-review-11" role="tabpanel" aria-labelledby="nav-under-review-11-tab">
+        <div class="card-body"> {% include 'inventory_app/item/requisition/includes/tables/under-review.html' %} </div>
+      </div>
+      <!-- Tab for Approved -->
+      <div class="tab-pane fade" id="nav-approved-11" role="tabpanel" aria-labelledby="nav-approved-11-tab">
+        <div class="card-body"> {% include 'inventory_app/item/requisition/includes/tables/approved.html' %} </div>
+      </div>
+      <!-- Tab for Rejected -->
+      <div class="tab-pane fade" id="nav-rejected-11" role="tabpanel" aria-labelledby="nav-rejected-11-tab">
+        <div class="card-body"> {% include 'inventory_app/item/requisition/includes/tables/rejected.html' %} </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'inventory_app/item/requisition/includes/modals/preview_requisition_modal.html'  %}
+
+
+{% endblock content %}
+
+
+{% block extrajs %}
+
+<script>
+$(document).ready(function() {
+    // Check if the user is a superuser
+    var is_superuser = {{ is_superuser|yesno:"true,false" }};
+
+    if (!is_superuser) {
+        // Replace this with the actual number of draft orders from your backend
+        var num_draft_orders = {{ num_draft_orders }};
+
+        if (num_draft_orders > 0) {
+            // Get the "Purchase Form" tab
+            var purchaseFormTab = document.getElementById('nav-add-11-tab');
+
+            // Remove the "data-bs-toggle" attribute to prevent the tab from being activated
+            purchaseFormTab.removeAttribute('data-bs-toggle');
+
+            // Show an alert when the "Purchase Form" tab is clicked
+            purchaseFormTab.addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You have ' + num_draft_orders + ' draft order(s). Please complete them before creating a new order.',
+                });
+            });
+        }
+    }
+});
+</script>
+<script>
+    $(document).ready(function() {
+    if (!user.is_superuser) {
+        $('#id_requested_by').select2().prop('disabled', true);
+        $('#id_sub_department').select2().prop('disabled', true);
+    }
+});
+</script>
+<script>
+    $(document).ready(function() {
+    // Function to show or hide fields based on requisition type
+    function updateFields() {
+        var requisitionType = $('#id_requisition_type').val();
+        if (requisitionType == 'store') {
+            $('.location-field').show();
+            $('.supplier-field').hide();
+        } else if (requisitionType == 'purchase') {
+            $('.location-field').hide();
+            $('.supplier-field').show();
+        }
+    }
+
+    // Call updateFields when the page loads
+    updateFields();
+
+    // Call updateFields whenever the requisition type changes
+    $('#id_requisition_type').change(updateFields);
+});
+</script>
+<script type="text/javascript">
+    var user_id = "{{ user_id }}";
+</script>
+
+<!--Loads item in Item Table and Loads Categories -->
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/load-items-script.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/load-categories-script.js' %}"></script>
+
+<!--Create Form when Click Item or Checkbox -->
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/create-formset-script.js' %}"></script>
+
+<!--Save Draft or Submit ass final -->
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/save-draft-submit.js' %}"></script>
+
+<!--Tables-->
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/table/draft.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/table/submitted.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/table/under-review.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/table/pending.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/table/approved.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/table/rejected.js' %}"></script>
+
+<!--Deatils of Requisition in Modals-->
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/modals/draft_requisition_details.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/modals/submitted_requisition_details.js' %}"></script>
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/modals/under-review_requisition_details.js' %}"></script>
+
+<script src="{% static 'assets/js/apps/inventory_app/item/requisition/modals/draft_to_submitted.js' %}"></script>
+
+{% endblock extrajs %}

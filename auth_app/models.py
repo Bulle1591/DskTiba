@@ -109,7 +109,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
     def __str__(self):
-        return self.email
+        return self.full_name
 
     @property
     def full_name(self):
@@ -131,3 +131,11 @@ class AppUserGroup(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.group.name}"
+
+
+class FailedLoginAttempt(models.Model):
+    username = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    attempt_type = models.CharField(max_length=255)
+    ip_address = models.GenericIPAddressField()
+
